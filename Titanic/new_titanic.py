@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn import datasets
 from sklearn import linear_model
+import tensorflow as tf
 import numpy as np
 import csv
 def modiTest(test):
@@ -68,20 +69,41 @@ for index in xrange(train.shape[0]):
         train[index][ifare] = fareMean
 
 
+X = tf.placeholder(tf.float32, shape=[None,6])
+Y = tf.placeholder(tf.float32, shape=[None,1])
+
+w1 = tf.Variable(tf.random_normal([6,6]), name='weight1')
+b1 = tf.Variable(tf.random_normal([6]), name = 'bias1')
+layer1 = tf.nn.tanh(tf.matmul(X,w1)+b1)
+w2 = tf.Variable(tf.random_normal([6,6]), name='weight2')
+b2 = tf.Variable(tf.random_normal([6]), name = 'bias2')
+layer2 = tf.nn.tanh(tf.matmul(layer1,w2)+b2)
+
+w3 = tf.Variable(tf.random_normal([6,1]), name='weight3')
+b3 = tf.Variable(tf.random_normal([1]), name = 'bias3')
+hypothesis = tf.sigmoid(tf.matmul(layer1,w3)+b3)
+
 train_x = np.array(train[:,[2,4,5,6,7,9]], dtype=float)
 train_y = np.array(train[:,4],dtype=float)
-#train_y = np.reshape(train_y, (-1,1))
-
-df = pd.read_csv('train.csv')
-xy = np.loadtxt('data-03-diabetes.csv', delimiter=',', dtype=np.float32)
-x_data = xy[:, 0:-1]
-y_data = xy[:, [-1]]
+train_y = np.reshape(train_y, (-1,1))
 
 
 
-iris = datasets.load_iris()
+cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) *
+                       tf.log(1 - hypothesis))
+optimizer = tf.train.AdamOptimizer(learning_rate=0.01).minimize(cost)
 
-clf = linear_model.LogisticRegression()
+print train_x.shape, train_y.shape
+
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+
+    for step in range(10001):
+        if step % 400 == 0:
+          cost_val, _ = sess.run([cost, optimizer],feed_dict={X:train_x, Y:train_y})
+          print step, cost_val
+
+'''clf = linear_model.LogisticRegression()
 clf.fit(train_x,train_y)
 
 test = np.array(test, dtype=None)
@@ -92,6 +114,8 @@ test_x = np.array(test[:,[1,3,4,5,6,8]], dtype=float)
 
 
 result = np.array(clf.predict(test_x))
+
+
 print result
 id = [[i+892] for i in xrange(0,len(result))]
 
@@ -110,3 +134,4 @@ for i in xrange(compare.shape[0]):
         correct += 1
 
 print correct
+'''
