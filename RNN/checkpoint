@@ -1,0 +1,2 @@
+model_checkpoint_path: "stock_prediction_Model-1000"
+all_model_checkpoint_paths: "stock_prediction_Model-1000"
