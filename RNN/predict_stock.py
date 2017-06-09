@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 sequence = 7
 inputD = 5
 outD = 1
+#CODE BY SONG
 def MinMaxScaler(data):
 
     numerator = data - np.min(data, 0)
