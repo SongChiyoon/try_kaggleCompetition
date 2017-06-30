@@ -13,7 +13,7 @@ def modiTest(test):
     sibMean = np.mean(np.float32(sib[sib[:] != ""]))
     parchMean = np.mean(np.float32(parch[parch[:] != ""]))
     fareMean = np.mean(np.float32(fare[fare[:] != ""]))
-    for index in xrange(test.shape[0]):
+    for index in range(test.shape[0]):
         if test[index][3] == 'male':
             test[index][3] = 0
         else:
@@ -54,7 +54,7 @@ sibMean = np.mean(np.float32(sib[sib[:] != ""]))
 parchMean = np.mean(np.float32(parch[parch[:] != ""]))
 fareMean = np.mean(np.float32(fare[fare[:] != ""]))
 
-for index in xrange(train.shape[0]):
+for index in range(train.shape[0]):
     if train[index][isex] == 'male':
         train[index][isex] = 0
     else:
@@ -93,7 +93,7 @@ cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) *
                        tf.log(1 - hypothesis))
 optimizer = tf.train.AdamOptimizer(learning_rate=0.01).minimize(cost)
 
-print train_x.shape, train_y.shape
+print(train_x.shape, train_y.shape)
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -101,7 +101,7 @@ with tf.Session() as sess:
     for step in range(10001):
         if step % 400 == 0:
           cost_val, _ = sess.run([cost, optimizer],feed_dict={X:train_x, Y:train_y})
-          print step, cost_val
+          print(step, cost_val)
 
 '''clf = linear_model.LogisticRegression()
 clf.fit(train_x,train_y)

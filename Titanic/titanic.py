@@ -34,7 +34,7 @@ sibMean = np.mean(np.float32(sib[sib[:] != ""]))
 parchMean = np.mean(np.float32(parch[parch[:] != ""]))
 fareMean = np.mean(np.float32(fare[fare[:] != ""]))
 
-for index in xrange(train.shape[0]):
+for index in range(train.shape[0]):
     if train[index][isex] == 'male':
         train[index][isex] = 0
     else:
@@ -53,7 +53,7 @@ train_x = np.array(train[:,[2,4,5,6,7,9]], dtype=float)
 train_y = np.array(train[:,4],dtype=float)
 train_y = np.reshape(train_y, (-1,1))
 
-print train_x.shape, train_y.shape
+print(train_x.shape, train_y.shape)
 
 X = tf.placeholder(tf.float32,shape = [None, 8])
 Y = tf.placeholder(tf.float32,shape = [None,1])
